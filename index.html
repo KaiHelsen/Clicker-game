@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kai's Bizarre clicker adventure</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+<!--this div contains the gameplay stuff-->
+<div id="gameWindow" class="centered-x framed margin-1">
+    <button type="button" id="mainButton" class="btn centered" ><b>CLICK MY FACE</b></button>
+</div>
+
+<!--this div contains a display of the game data. score, multipliers, etc.-->
+<div id="gameData" class="centered-x framed margin-1">
+    <h1>Jojo Points:</h1>
+    <h2 id="pointCounterDsp" class="counter"></h2>
+    <h3>total multiplier:</h3>
+    <h4 id="multiplierDsp" class="counter"></h4>
+
+    <h3>autoclickers active:</h3>
+    <h4 id="autoClickerDsp" class="counter"></h4>
+
+    <h3>!!!BONUS!!!</h3>
+    <button type="button" id="BonusButton" class="bonusBtn" disabled> GET BONUS!</button>
+</div>
+
+<!--this div contains a store-->
+<div id="store" class = "centered-x framed margin-1">
+    <ul>
+        <li><button type="button" id="storeMultiButton" class="btn" disabled>buy multiplier</button></li>
+        <li><button type="buton" id="storeAutoButton" class="btn" disabled>buy autoclicker</button></li>
+    </ul>
+
+</div>
+
+<!--JAVASCRIPT-->
+<!--KEEP THIS AT THE BOTTOM AT ALL TIMES-->
+<script src="js/clicker.js"></script>
+
+</body>
+</html>
