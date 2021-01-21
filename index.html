@@ -2,42 +2,90 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Kai's Bizarre clicker adventure</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let the torment begin</title>
     <link rel="stylesheet" href="css/main.css">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="bg-dark">
+<div id="wrapper">
+    <header id="head" class="w-100">
+        <div class="text-centered">
+            <h1 class="text-light DEBUGFRAME padding-3 bg-dark-2 font-garamond">WELCOME TO TORMENT</h1>
+        </div>
+        <div id="topMenu" class="text-light padding-3 DEBUGFRAME text-centered">
+            NAV ELEMENTS
+        </div>
+    </header>
 
-<!--this div contains the gameplay stuff-->
-<div id="gameWindow" class="centered-x framed margin-1">
-    <button type="button" id="mainButton" class="btn centered" ><b>CLICK MY FACE</b></button>
+    <div id="Game" class="row centered-x w-100">
+        <div id="clicker" class="DEBUGFRAME padding-3 col-12 col-md-6 h-40 h-md-100">
+            <div class="bg-dark-2 rounded-2 w-100 h-100 overflow-hidden">
+                <div class="w-100 text-centered">
+                    <H1 id="agonyDisplay" class="text-light">AGONY:</H1>
+                    <button type="button" id="clickerBtn" class="shadow rounded-1"><b>SUFFER</b></button>
+                </div>
+            </div>
+
+        </div>
+        <div id="game-info" class="DEBUGFRAME padding-3 col-6 col-md-3 h-60 h-md-100">
+            <div class="bg-dark-2 rounded-2 w-100 h-100 overflow-x-hidden overflow-y-scroll">
+                <div>
+                    <h3>STATS</h3>
+                    <ul>
+                        <li><p id="soulsDisplay">SOULS:</p></li>
+                        <li><p id="devilsDisplay">DEVILS:</p></li>
+                        <LI><p id="succubiDisplay">SUCCUBI:</p></LI>
+                    </ul>
+                    <div id="cheatmenu">
+                        <ul>
+                            <li>
+                                <button id="cheatAgony1K" class="btn-cheat padding-3 w-100 rounded-top margin-b">
+                                    +1K Agony
+                                </button>
+                                <button id="cheatAgony1M" class="btn-cheat padding-3 w-100 rounded-top margin-b">
+                                    +1Mil Agony
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="store" class="DEBUGFRAME padding-3 col-6 col-md-3 h-60 h-md-100">
+            <div class="bg-dark-2 rounded-2 w-100 h-100 overflow-x-hidden overflow-y-scroll">
+                <H3>STORE</H3>
+                <ul>
+                    <li>
+                        <button id="buySoulBtn" class="btn-store tooltip padding-3 w-100 rounded-top margin-b" disabled hidden>Buy
+                            soul
+                        </button>
+                    </li>
+                    <li>
+                        <button id="buyDevilBtn" class="btn-store padding-3 w-100 rounded-top margin-b" disabled hidden>Hire
+                            Devil
+                        </button>
+                    </li>
+                    <li>
+                        <button id="buySuccubusBtn" class="btn-store padding-3 w-100 rounded-top margin-b" disabled hidden>Hire
+                            Succubus
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="bottomMenu" class="centered-x fixedBottom padding-3 DEBUGFRAME bg-red margin-y1 w-100 h-10">
+        <h4 class="text-light text-centered">Stuff go here</h4>
+    </div>
 </div>
 
-<!--this div contains a display of the game data. score, multipliers, etc.-->
-<div id="gameData" class="centered-x framed margin-1">
-    <h1>Jojo Points:</h1>
-    <h2 id="pointCounterDsp" class="counter"></h2>
-    <h3>total multiplier:</h3>
-    <h4 id="multiplierDsp" class="counter"></h4>
 
-    <h3>autoclickers active:</h3>
-    <h4 id="autoClickerDsp" class="counter"></h4>
-
-    <h3>!!!BONUS!!!</h3>
-    <button type="button" id="BonusButton" class="bonusBtn" disabled> GET BONUS!</button>
-</div>
-
-<!--this div contains a store-->
-<div id="store" class = "centered-x framed margin-1">
-    <ul>
-        <li><button type="button" id="storeMultiButton" class="btn" disabled>buy multiplier</button></li>
-        <li><button type="buton" id="storeAutoButton" class="btn" disabled>buy autoclicker</button></li>
-    </ul>
-
-</div>
-
-<!--JAVASCRIPT-->
-<!--KEEP THIS AT THE BOTTOM AT ALL TIMES-->
-<script src="js/clicker.js"></script>
+<!--//scripts go here\\-->
+<script src="js/HellClicker.js"></script>
 
 </body>
 </html>
