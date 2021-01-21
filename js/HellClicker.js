@@ -136,7 +136,7 @@ function Init() {
 
 function UpdateDisplay() {
     //update agony display
-    agonyDsp.innerHTML = agony;
+    agonyDsp.innerHTML = SimpleNumber(agony);
 
     //update souls display
     soulsDsp.innerHTML = "SOULS: " + souls;
@@ -161,7 +161,7 @@ function UpdateStore() {
 //that's insight that is.
 function StoreButton(tag, price, buttonID) {
     buttonID.disabled = (agony < price);
-    buttonID.innerHTML = tag + ": " + price + " agony";
+    buttonID.innerHTML = tag + ": " + SimpleNumber(price) + " agony";
     //maybe don't run this test every time? find alternative that only runs once then never again.
     if (agony >= price) {
         buttonID.hidden = false;
@@ -172,9 +172,19 @@ function StoreButton(tag, price, buttonID) {
 //when the number is over 1 million, it will be presented as 1.000 mil
 //when the number is over 1 billion, it will be represented as 1.000 bil
 //etc.
+//maybe also see about putting in periods to separate big numbers below 1000000
 function SimpleNumber(number)
 {
-    let numberText = '' + number;
+    let i = 0.0;
+    if(number >= 1000000){
+        i = Math.floor(number/1000)/1000 + " mil";
+    }
+    else if(number >= 1000000000){
+        i = Math.floor(number/1000000)/1000 + " bil";
+    }
+    else{ i = number.toString();}
+
+    return i;
 }
 
 function Tick() {
