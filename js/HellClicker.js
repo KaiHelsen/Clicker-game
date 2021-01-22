@@ -157,7 +157,7 @@ HHellClicker = function ()
         cheatAgony1KBtn.hidden = !areWeCheating;
         cheatAgony1MilBtn.hidden = !areWeCheating;
 
-        
+
         clickerBtn = document.getElementById("clickerBtn");
         //Initialize script functions
         //iterate through MinionsArray array and generate store buttons for all of them.
