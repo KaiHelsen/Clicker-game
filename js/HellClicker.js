@@ -13,259 +13,338 @@
 //
 // -Dante Alighieri
 
-
-//==============================
-//------CLASS DEFINITIONS-------
-//==============================
-
-class minion
+/* TODO: -create functions to easily generate the html content of the buttons and stat bars. no repetition.
+         -implement functionality of different minions.
+         -simplify & optimize updates.
+         -more?
+ */
+HHellClicker = function ()
 {
-    //type: name of the minion
-    //buttonId: ID of the store button used to buy this minion
-    //amount: owned amount of this minion
-    //basePrice: how much does this minion cost by default
-    //price: actual store price based on base price and amount of minions owned
+//==============================\\
+//------CLASS DEFINITIONS-------\\
+//==============================\\
 
-    constructor(type, buttonId, button, amount, basePrice, price) {
-        this.type = type;
-        this.buttonId = buttonId;
-        this.button = button;
-        this.amount = amount;
-        this.basePrice = basePrice;
-        this.price = price;
+    class Minion {
+        //MinionsArray are your basic units
+        //more advanced units inherit from the minion class
+
+        //type: name of the minion
+        //amount: owned amount of this minion
+        //basePrice: how much does this minion cost by default
+        //price: actual store price based on base price and amount of MinionsArray owned
+
+        constructor(type, button, statBar, amount, basePrice, price) {
+            this.type = type;
+            this.button = button;
+            this.statBar = statBar;
+            this.amount = amount;
+            this.basePrice = basePrice;
+            this.price = price;
+        }
+
+        DoJob() {
+            // console.log(this.type + " does its job.");
+        }
     }
-}
 
-//===============================
-//-----END CLASS DEFINITIONS-----
-//===============================
+    class Corruptor extends Minion {
+        //corruptors generate additional agony over time
+
+        DoJob() {
+            // super.DoJob();
+            //console.log(this.type + " corrupts the innocent.");
+        }
+    }
+
+    class Tormentor extends Minion {
+        //tormentors generate additional souls over time
+
+        DoJob() {
+            // super.DoJob();
+            //console.log(this.type + " engages in torture.");
+
+        }
+
+    }
+
+//===========================\\
+//---------VARIABLES---------\\
+//===========================\\
+
 
 //BUTTON REFERENCES:
-let clickerBtn = document.getElementById("clickerBtn");
+    let clickerBtn = document.getElementById("clickerBtn");
 
-let cheatAgony1KBtn = document.getElementById("cheatAgony1K");
-let cheatAgony1MilBtn = document.getElementById("cheatAgony1M");
+    let cheatAgony1KBtn = document.getElementById("cheatAgony1K");
+    let cheatAgony1MilBtn = document.getElementById("cheatAgony1M");
 
 //DISPLAY ELEMENT REFERENCES:
-let agonyDsp = document.getElementById("agonyDisplay");
-let soulsDsp = document.getElementById("soulsDisplay");
-let devilsDsp = document.getElementById("devilsDisplay");
-let succubiDsp = document.getElementById("succubiDisplay");
+    let agonyDsp = document.getElementById("agonyDisplay");
 
 //MENU REFERENCES (fill these through usage of script)
-let StoreList = document.getElementById("storeItemList");
+    let StoreList = document.getElementById("storeItemList");
 
 //INVENTORY VALUES
-let agony = 0;
-//LEGACY VALUES
-let souls = 1;
-let devils = 0;
-let succubi = 0;
+    let agony = 0;
 
-//better to define these in the init?
-let minions = [
-    new minion("soul", "soulBtn", 0,1,10,0),
-    new minion("imp", "impBtn", 0,0,10,0),
-    new minion("devil", "devilBtn", 0,0,20,0),
-    new minion("jezebel", "jezebelBtn", 0,0,30,0),
-    new minion("beguiler", "beguilerBtn", 0,0,40,0),
-]
+//FIXME: better to define these in the init?
+    let MinionsArray = [
+        new Minion("soul",null,null, 1, 10, 0),
+        new Tormentor("imp",null,null, 0, 10, 0),
+        new Tormentor("devil",null,null, 0, 20, 0),
+        new Corruptor("jezebel",null,null, 0, 30, 0),
+        new Corruptor("beguiler",null,null, 0, 40, 0),
+    ]
 
 //MULTIPLIERS
-let agonyMultiplier = 1;
-let agonyPerSecond = 0;
-let soulsPerSecond = 0;
+    let agonyMultiplier = 1;
+    let agonyPerSecond = 0;
+    let soulsPerSecond = 0;
 
-//BASE PRICES
-let soulBasePrice = 10;
-let devilBasePrice = 20;
-let succubusBasePrice = 30;
-
-//CURRENT PRICES
-let soulPrice = soulBasePrice;
-let devilPrice = devilBasePrice;
-let succubusPrice = succubusBasePrice;
-
-let succubiTimer = 0;
-let succubiInterval = 20;
+    let succubiTimer = 0;
+    let succubiInterval = 20;
 
 //DANGER ZONE
-let areWeCheating = true;//END DANGER ZONE
+    let areWeCheating = false;//END DANGER ZONE
 
-//======================
-//----STUFF TO RUN------
-//======================
+//=======================\\
+//---------GAME----------\\
+//=======================\\
 
-Init();
+    //run on startup
+    Init();
 
 //TICK INTERVAL
-setInterval(Tick, 1000);
+    setInterval(Tick, 1000);
 
-//======================
-//BUTTON LISTENER EVENTS
-//======================
+//======================\\
+//-------END GAME-------\\
+//======================\\
+
+//============================\\
+//---BUTTON LISTENER EVENTS---\\
+//============================\\
 
 //---MAIN CLICKER BUTTON
-clickerBtn.addEventListener("click", () =>
-{
-    //on click, torment souls to gain agony.
-    //1 soul generates 1 agony per click by default
+    clickerBtn.addEventListener("click", () =>
+    {
+        //on click, torment souls to gain agony.
+        //1 soul generates 1 agony per click by default
 
-    agony += souls;
-    UpdateStore();
-    UpdateDisplay();
-});
+        agony += MinionsArray[0].amount;
+        UpdateDisplay();
+    });
 
 //---CHEATY, CHEATY BUTTONS
-cheatAgony1KBtn.addEventListener("click", () =>
-{
-    agony += 1000;
-    UpdateDisplay()
-});
-cheatAgony1MilBtn.addEventListener("click", () =>
-{
-    agony += 1000000;
-    UpdateDisplay()
-});
+    cheatAgony1KBtn.addEventListener("click", () =>
+    {
+        agony += 1000;
+        UpdateDisplay();
+    });
+    cheatAgony1MilBtn.addEventListener("click", () =>
+    {
+        agony += 1000000;
+        UpdateDisplay();
+    });
 
 //=============================
 //FUNCTIONS TO MAKE LIFE EASIER
 //=============================
-function Init() {
-    //Initialize script functions
-    //iterate through minions array and generate store buttons for all of them.
 
-    //SETUP ALL STORE BUTTONS
-    minions.forEach(function (minion)
-    {
-        minion.price = CalculatePrice(minion.basePrice, minion.amount, 1);
-        CreateStoreButton("storeItemList", minion);
-    });
+    function Init() {
 
-    UpdateStore();
-    UpdateDisplay();
-    // CreateStoreButton("storeItemList", minions[0].type, minions[0].price, minions[0].buttonId);
-}
+        //INITIALIZE BUTTONS
+        cheatAgony1KBtn.hidden = !areWeCheating;
+        cheatAgony1MilBtn.hidden = !areWeCheating;
 
-function UpdateDisplay() {
-    //update agony display
-    agonyDsp.innerHTML = SimpleNumber(agony).toString();
+        
+        clickerBtn = document.getElementById("clickerBtn");
+        //Initialize script functions
+        //iterate through MinionsArray array and generate store buttons for all of them.
 
-    //update souls display
-    soulsDsp.innerHTML = "SOULS: " + souls;
-
-    //update devils display
-    devilsDsp.innerHTML = "DEVILS: " + devils;
-
-    //update Succubi display
-    succubiDsp.innerHTML = "SUCCUBI: " + succubi;
-}
-
-function UpdateStore() {
-    //update store buttons if the player has enough agony to buy something,
-    //as well as updating the displayed prices
-
-    minions.forEach(function (minion)
-    {
-        minion.button.disabled = (agony < minion.price);
-        minion.button.innerHTML = minion.type.toUpperCase() + ": " + SimpleNumber(minion.price) + " agony";
-        //maybe don't run this test every time? find alternative that only runs once then never again.
-        if (agony >= minion.price) {
-            document.getElementById(minion.buttonId).hidden = false;
-        }
-    });
-}
-
-//this function will generate a button automatically
-//it will then also add a listener to the button
-//WORK IN PROGRESS: add functionality
-//CONSIDERATION: right now, function takes a minion object as an argument
-//this means the function might malfunction if it is forced to take something else as an argument
-//so, perhaps look into how we can handle this function by implementing some classes?
-function CreateStoreButton(locationId, minion) {
-
-    //ONLY RUN IF MINION EXISTS
-    //OTHERWISE, GENERATE ERROR
-    if (minion != null) {
-        //create unique array per minion
-        minion.buttonId = minion.type + "-btn";
-
-        //create button
-        document.getElementById(locationId).insertAdjacentHTML("beforeend",
-            "<li>" +
-            "<button id=" +
-            minion.buttonId +
-            " class='btn-store tooltip padding-3 w-100 rounded-top margin-b' disabled>" +
-            minion.type.toUpperCase() + ": " + SimpleNumber(minion.price) + " agony" +
-            "</button>" +
-            "</li>");
-
-        //store button in minions array
-        minion.button = document.getElementById(minion.buttonId);
-
-        //add listener
-        minion.button.addEventListener("click", () =>
+        //SETUP ALL STORE BUTTONS
+        //TODO: add stats display in same loop
+        MinionsArray.forEach(function (minion)
         {
-            minion.amount++;
-            console.log("bought " + minion.type + ", total amount now " + minion.amount);
-            agony -= minion.price;
-
-            //update price
             minion.price = CalculatePrice(minion.basePrice, minion.amount, 1);
+            CreateShopButton("storeItemList", minion);
+            CreateStatBar("itemStatList", minion);
+        });
 
-            //run update functions
-            UpdateStore();
+        UpdateShop();
+        UpdateStats();
+        // CreateStoreButton("storeItemList", MinionsArray[0].type, MinionsArray[0].price, MinionsArray[0].buttonId);
+    }
+
+    function UpdateDisplay()
+    {
+        UpdateShop();
+        UpdateStats();
+    }
+
+    function UpdateStats() {
+        //update agony display
+        agonyDsp.innerHTML = SimplifyNumber(agony).toString();
+
+        //display information about owned MinionsArray
+        MinionsArray.forEach(function(minion){
+            minion.statBar.innerHTML =
+                (minion.type + "s").toUpperCase().bold() + " : " + SimplifyNumber(minion.amount)
         });
     }
-    else {
-        console.error("Something went wrong with generating a button!")
+
+    function UpdateShop() {
+        //update store buttons if the player has enough agony to buy something,
+        //as well as updating the displayed prices
+
+        MinionsArray.forEach(function (minion)
+        {
+            minion.button.disabled = (agony < minion.price);
+            minion.button.innerHTML = minion.type.toUpperCase() + ": " + SimplifyNumber(minion.price) + " agony";
+            //maybe don't run this test every time? find alternative that only runs once then never again.
+            if (agony >= minion.price) {
+                minion.button.hidden = false;
+            }
+        });
     }
 
-}
+    function CreateShopButton(locationId, minion) {
+        //this function will generate a button automatically
+        //it will then also add a listener to the button
 
-//SimplifyNumber will simplify large numbers into smaller numbers
-//when the number is over 1 million, it will be presented as 1.000 mil
-//when the number is over 1 billion, it will be represented as 1.000 bil
-//etc.
-//maybe also see about putting in periods to separate big numbers below 1000000
-function SimpleNumber(number) {
-    let i = 0.0;
-    if (number >= 1000000) {
-        i = Math.floor(number / 1000) / 1000 + " mil";
+        if (minion instanceof Minion) {
+
+            //generate custom Id for button
+            let tempId = "Buy" + minion.type;
+
+            //create button
+            document.getElementById(locationId).insertAdjacentHTML("beforeend",
+                "<li>" +
+                "<button id=" +
+                tempId +
+                " class='btn-store padding-3 w-100 rounded-top margin-b' disabled>" +
+                minion.type.toUpperCase() + ": " + SimplifyNumber(minion.price) + " agony" +
+                "</button>" +
+                "</li>");
+
+            //store button in StoreButtons Array
+            //TODO: solution is messy, cleanup?
+            minion.button = document.getElementById(tempId);
+
+            //add eventListener to handle what happens when the button is clicked
+            minion.button.addEventListener("click", () =>
+            {
+                minion.amount++;
+                console.log("bought " + minion.type + ", total amount now " + minion.amount);
+                agony -= minion.price;
+
+                //update price
+                minion.price = CalculatePrice(minion.basePrice, minion.amount, 1);
+
+                //run update functions
+                UpdateDisplay();
+            });
+
+            //add eventListener to handle the cursor hovering over the button
+            minion.button.addEventListener("mouseOver", () =>
+                {
+                    /*
+                    * TODO: - build container to host info about the minion
+                    *       - store container location/id
+                    *       - make this function put text inside the container for as long as it is being hovered over
+                    *       - add tooltip string variable to minion and inherited classes
+                    *       - write tooltips for variables
+                     */
+
+
+                }
+            );
+        }
+        else {
+            //TODO: write a proper error message
+            console.error("Something went wrong with generating a button!")
+        }
+
     }
-    else if (number >= 1000000000) {
-        i = Math.floor(number / 1000000) / 1000 + " bil";
+
+    function CreateStatBar(locationId, minion) {
+        //This function will create a single stat bar for the stat menu
+
+        if(minion instanceof Minion)
+        {
+            //generate id reference for stat bar
+            let tempId = minion.type + "Stat";
+
+            //generate stat bar
+            document.getElementById(locationId).insertAdjacentHTML("beforeend",
+                "<li id=" +
+                tempId + //give element custom ID
+                " class='w-100 padding-3 text-light'>" +
+                (minion.type + "s").toUpperCase().bold() + //for now, this way of generating a plural will work
+                " : " +
+                SimplifyNumber(minion.amount) + //simplified amount of specific item
+                "</li>"
+                );
+
+            //Add stat bar to StatBars Array
+            minion.statBar = document.getElementById(tempId);
+
+        }
+        else {
+            //TODO: write a proper error message
+            console.error("Something went wrong with generating a stat line")
+        }
+
     }
-    else {
-        i = number.toString();
+
+    function SimplifyNumber(number) {
+        //SimplifyNumber will simplify large numbers into smaller numbers
+        //when the number is over 1 million, it will be presented as 1.000 million
+        //when the number is over 1 billion, it will be represented as 1.000 billion
+        //etc.
+        //TODO: add support for higher values?
+        //maybe also see about putting in periods to separate big numbers below 1000000
+
+        if (number >= 1000000) {
+            return Math.floor(number / 1000) / 1000 + " million";
+        }
+        else if (number >= 1000000000) {
+            return Math.floor(number / 1000000) / 1000 + " billion";
+        }
+        else {
+            return number.toString();
+        }
     }
 
-    return i;
-}
+    function Tick() {
+        //Tick function should be executed once every interval of the timer.
+        //TODO: - how to iterate through the array and get every minion type to do its own function
+        //      - every X ticks/X seconds, a succubus type minion should give new souls
+        //      - every X ticks/X seconds, a devil type minion should give new agony
+        //      - iterate through array and have every minion run its own function?
+        //      - consider class inheritance to make things easier to iterate on.
 
-function Tick() {
-    //add agony based on Devils
-    agony += devils * 3;
+        MinionsArray.forEach(function (minion)
+        {
+            if (minion.amount > 0) {
+                minion.DoJob();
+            }
+        });
 
-    //Succubus timer
-    succubiTimer += 1000;
+        UpdateShop();
+        UpdateStats();
 
-    if (succubiTimer >= succubiInterval * 1000) {
-        souls += 1 * succubi;
-        succubiTimer = 0;
     }
-    //over time, succubi will acquire more souls for you
-    UpdateStore();
-    UpdateDisplay();
 
-}
-
-//calculates price of an object based on the base cost, the owned amount of said item, and the cost multiplier
-function CalculatePrice(basePrice, amount, priceMultiplier) {
-    return basePrice + Math.floor(Math.pow(amount, 2 * priceMultiplier));
-}
+    function CalculatePrice(basePrice, amount, priceMultiplier) {
+        //calculates price of an object based on the base cost, the owned amount of said item, and the cost multiplier
+        //TODO: figure out better price calculation
+        return basePrice + Math.floor(Math.pow(amount, 2 * priceMultiplier));
+    }
 
 
 //==============================
 //-------HELPER FUNCTIONS-------
 //==============================
+
+}();
