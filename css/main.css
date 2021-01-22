@@ -116,11 +116,11 @@ ul{
 
 
 /*ROUNDED BORDERS*/
-.rounded-1{border-radius: .2rem;}
-.rounded-2{border-radius: .4rem;}
-.rounded-3{border-radius: .6rem;}
-.rounded-4{border-radius: .8rem;}
-.rounded-5{border-radius: 1rem;}
+.rounded-1{border-radius: .2rem !important;}
+.rounded-2{border-radius: .4rem !important;}
+.rounded-3{border-radius: .6rem !important;}
+.rounded-4{border-radius: .8rem !important;}
+.rounded-5{border-radius: 1rem !important;}
 
 .rounded-auto{border-radius:50%;}
 
@@ -326,3 +326,4 @@ ul{
 .overflow-y-scroll{overflow-y: scroll;}
 .overflow-x-hidden{overflow-x: hidden;}
 .overflow-y-hidden{overflow-y: hidden;}
+.overflow-hidden{overflow: hidden;}

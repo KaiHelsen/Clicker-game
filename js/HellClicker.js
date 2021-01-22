@@ -13,11 +13,35 @@
 //
 // -Dante Alighieri
 
+
+//==============================
+//------CLASS DEFINITIONS-------
+//==============================
+
+class minion
+{
+    //type: name of the minion
+    //buttonId: ID of the store button used to buy this minion
+    //amount: owned amount of this minion
+    //basePrice: how much does this minion cost by default
+    //price: actual store price based on base price and amount of minions owned
+
+    constructor(type, buttonId, button, amount, basePrice, price) {
+        this.type = type;
+        this.buttonId = buttonId;
+        this.button = button;
+        this.amount = amount;
+        this.basePrice = basePrice;
+        this.price = price;
+    }
+}
+
+//===============================
+//-----END CLASS DEFINITIONS-----
+//===============================
+
 //BUTTON REFERENCES:
 let clickerBtn = document.getElementById("clickerBtn");
-let buySoulBtn = document.getElementById("buySoulBtn");
-let buyDevilBtn = document.getElementById("buyDevilBtn");
-let buySuccubusBtn = document.getElementById("buySuccubusBtn");
 
 let cheatAgony1KBtn = document.getElementById("cheatAgony1K");
 let cheatAgony1MilBtn = document.getElementById("cheatAgony1M");
@@ -31,38 +55,20 @@ let succubiDsp = document.getElementById("succubiDisplay");
 //MENU REFERENCES (fill these through usage of script)
 let StoreList = document.getElementById("storeItemList");
 
-
 //INVENTORY VALUES
 let agony = 0;
+//LEGACY VALUES
 let souls = 1;
 let devils = 0;
 let succubi = 0;
 
+//better to define these in the init?
 let minions = [
-    {
-        "type": "imp",
-        "amount": 0,
-        "basePrice": 10,
-        "price": 0
-    },
-    {
-        "type": "devil",
-        "amount": 0,
-        "basePrice": 20,
-        "price": 0
-    },
-    {
-        "type": "Jezebel",
-        "amount": 0,
-        "basePrice": 30,
-        "price": 0
-    },
-    {
-        "type": "Beguiler",
-        "amount": 0,
-        "basePrice": 40,
-        "price": 0
-    },
+    new minion("soul", "soulBtn", 0,1,10,0),
+    new minion("imp", "impBtn", 0,0,10,0),
+    new minion("devil", "devilBtn", 0,0,20,0),
+    new minion("jezebel", "jezebelBtn", 0,0,30,0),
+    new minion("beguiler", "beguilerBtn", 0,0,40,0),
 ]
 
 //MULTIPLIERS
@@ -110,47 +116,6 @@ clickerBtn.addEventListener("click", () =>
     UpdateDisplay();
 });
 
-//---BUY SOULS BUTTON
-buySoulBtn.addEventListener("click", () =>
-{
-    souls++;
-    agony -= soulPrice;
-
-    //update soul price
-    //soul prices should go up a LOT
-    soulPrice = Math.floor(soulBasePrice + Math.pow(2, souls) - 1);
-
-    //run update functions
-    UpdateStore();
-    UpdateDisplay();
-});
-
-//---BUY DEVIL BUTTON
-buyDevilBtn.addEventListener("click", () =>
-{
-    devils++;
-    agony -= devilPrice;
-
-    devilPrice = Math.floor(devilBasePrice + Math.pow(4, devils) - 4);
-
-    UpdateStore();
-    UpdateDisplay();
-
-});
-
-//---BUY SUCCUBUS BUTTON
-buySuccubusBtn.addEventListener("click", () =>
-{
-    succubi++;
-    agony -= succubusPrice;
-
-    succubusPrice = Math.floor(succubusBasePrice + Math.pow(10, succubi) - 10)
-
-    UpdateStore();
-    UpdateDisplay();
-});
-
-
 //---CHEATY, CHEATY BUTTONS
 cheatAgony1KBtn.addEventListener("click", () =>
 {
@@ -168,13 +133,23 @@ cheatAgony1MilBtn.addEventListener("click", () =>
 //=============================
 function Init() {
     //Initialize script functions
+    //iterate through minions array and generate store buttons for all of them.
+
+    //SETUP ALL STORE BUTTONS
+    minions.forEach(function (minion)
+    {
+        minion.price = CalculatePrice(minion.basePrice, minion.amount, 1);
+        CreateStoreButton("storeItemList", minion);
+    });
+
     UpdateStore();
     UpdateDisplay();
+    // CreateStoreButton("storeItemList", minions[0].type, minions[0].price, minions[0].buttonId);
 }
 
 function UpdateDisplay() {
     //update agony display
-    agonyDsp.innerHTML = SimpleNumber(agony);
+    agonyDsp.innerHTML = SimpleNumber(agony).toString();
 
     //update souls display
     soulsDsp.innerHTML = "SOULS: " + souls;
@@ -189,21 +164,63 @@ function UpdateDisplay() {
 function UpdateStore() {
     //update store buttons if the player has enough agony to buy something,
     //as well as updating the displayed prices
-    StoreButton("SOUL", soulPrice, buySoulBtn);
-    StoreButton("DEVIL", devilPrice, buyDevilBtn);
-    StoreButton("SUCCUBUS", succubusPrice, buySuccubusBtn);
+
+    minions.forEach(function (minion)
+    {
+        minion.button.disabled = (agony < minion.price);
+        minion.button.innerHTML = minion.type.toUpperCase() + ": " + SimpleNumber(minion.price) + " agony";
+        //maybe don't run this test every time? find alternative that only runs once then never again.
+        if (agony >= minion.price) {
+            document.getElementById(minion.buttonId).hidden = false;
+        }
+    });
 }
 
-//handles store buttons
-//expanding on this function will affect all default store buttons
-//that's insight that is.
-function StoreButton(tag, price, buttonID) {
-    buttonID.disabled = (agony < price);
-    buttonID.innerHTML = tag + ": " + SimpleNumber(price) + " agony";
-    //maybe don't run this test every time? find alternative that only runs once then never again.
-    if (agony >= price) {
-        buttonID.hidden = false;
+//this function will generate a button automatically
+//it will then also add a listener to the button
+//WORK IN PROGRESS: add functionality
+//CONSIDERATION: right now, function takes a minion object as an argument
+//this means the function might malfunction if it is forced to take something else as an argument
+//so, perhaps look into how we can handle this function by implementing some classes?
+function CreateStoreButton(locationId, minion) {
+
+    //ONLY RUN IF MINION EXISTS
+    //OTHERWISE, GENERATE ERROR
+    if (minion != null) {
+        //create unique array per minion
+        minion.buttonId = minion.type + "-btn";
+
+        //create button
+        document.getElementById(locationId).insertAdjacentHTML("beforeend",
+            "<li>" +
+            "<button id=" +
+            minion.buttonId +
+            " class='btn-store tooltip padding-3 w-100 rounded-top margin-b' disabled>" +
+            minion.type.toUpperCase() + ": " + SimpleNumber(minion.price) + " agony" +
+            "</button>" +
+            "</li>");
+
+        //store button in minions array
+        minion.button = document.getElementById(minion.buttonId);
+
+        //add listener
+        minion.button.addEventListener("click", () =>
+        {
+            minion.amount++;
+            console.log("bought " + minion.type + ", total amount now " + minion.amount);
+            agony -= minion.price;
+
+            //update price
+            minion.price = CalculatePrice(minion.basePrice, minion.amount, 1);
+
+            //run update functions
+            UpdateStore();
+        });
     }
+    else {
+        console.error("Something went wrong with generating a button!")
+    }
+
 }
 
 //SimplifyNumber will simplify large numbers into smaller numbers
@@ -241,6 +258,11 @@ function Tick() {
     UpdateStore();
     UpdateDisplay();
 
+}
+
+//calculates price of an object based on the base cost, the owned amount of said item, and the cost multiplier
+function CalculatePrice(basePrice, amount, priceMultiplier) {
+    return basePrice + Math.floor(Math.pow(amount, 2 * priceMultiplier));
 }
 
 
