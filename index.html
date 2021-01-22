@@ -20,19 +20,20 @@
         </div>
     </header>
 
-    <div id="Game" class="row centered-x w-100">
-        <div id="clicker" class="DEBUGFRAME padding-3 col-12 col-md-6 h-40 h-md-100">
-            <div class="bg-dark-2 rounded-2 w-100 h-100 overflow-hidden">
-                <div class="w-100 text-centered">
+    <div id="Game" class="row centered-x w-100 w-md-75">
+        <div id="clicker" class="DEBUGFRAME padding-3 col-12 col-md-5 h-40 h-md-100">
+            <div class="d-flex bg-dark-2 rounded-2 w-100 h-100 overflow-hidden">
+                <div class="w-100 text-centered align-self-center">
                     <H1 id="agonyDisplay" class="text-light">AGONY:</H1>
                     <button type="button" id="clickerBtn" class="shadow rounded-1"><b>SUFFER</b></button>
                 </div>
             </div>
 
         </div>
-        <div id="game-info" class="DEBUGFRAME padding-3 col-6 col-md-3 h-60 h-md-100">
+
+        <div id="game-info" class="DEBUGFRAME padding-3 col-5 col-md-3 h-60 h-md-100">
             <div class="bg-dark-2 rounded-2 w-100 h-100 overflow-x-hidden overflow-y-scroll">
-                <div>
+                <div id="statScreen">
                     <h3>STATS</h3>
                     <ul>
                         <li><p id="soulsDisplay">SOULS:</p></li>
@@ -54,26 +55,47 @@
                 </div>
             </div>
         </div>
-        <div id="store" class="DEBUGFRAME padding-3 col-6 col-md-3 h-60 h-md-100">
+
+        <div id="store" class="DEBUGFRAME padding-3 col-7 col-md-4 h-60 h-md-100">
             <div class="bg-dark-2 rounded-2 w-100 h-100 overflow-x-hidden overflow-y-scroll">
-                <H3>STORE</H3>
-                <ul>
-                    <li>
-                        <button id="buySoulBtn" class="btn-store tooltip padding-3 w-100 rounded-top margin-b" disabled hidden>Buy
-                            soul
-                        </button>
-                    </li>
-                    <li>
-                        <button id="buyDevilBtn" class="btn-store padding-3 w-100 rounded-top margin-b" disabled hidden>Hire
-                            Devil
-                        </button>
-                    </li>
-                    <li>
-                        <button id="buySuccubusBtn" class="btn-store padding-3 w-100 rounded-top margin-b" disabled hidden>Hire
-                            Succubus
-                        </button>
-                    </li>
-                </ul>
+                <div class="DEBUGFRAME w-100 h-60 h-sm-80"><H3>STORE</H3>
+                    <ul id="storeItemList">
+                        <li>
+                            <button id="buySoulBtn" class="btn-store tooltip padding-3 w-100 rounded-top margin-b"
+                                    disabled hidden>Buy
+                                soul
+                            </button>
+                        </li>
+                        <li>
+                            <button id="buyImpBtn" class="btn-store padding-3 w-100 rounded-top margin-b" disabled
+                                    hidden>Hire
+                                Imp
+                            </button>
+                        </li>
+                        <li>
+                            <button id="buyDevilBtn" class="btn-store padding-3 w-100 rounded-top margin-b" disabled
+                                    hidden>Hire
+                                Devil
+                            </button>
+                        </li>
+                        <li>
+                            <button id="buyJezebelBtn" class="btn-store padding-3 w-100 rounded-top margin-b" disabled
+                                    hidden>Hire
+                                Jezebel
+                            </button>
+                        </li>
+                        <li>
+                            <button id="buyBeguilerBtn" class="btn-store padding-3 w-100 rounded-top margin-b" disabled
+                                    hidden>Hire
+                                Pit Fiend
+                            </button>
+                        </li>
+
+                    </ul>
+                </div>
+                <div id="toolTips" class="DEBUGFRAME d-flex-center text-light bg-dark padding-3 w-100 h-40 h-sm-20">
+                    <p class="DEBUGFRAME margin-auto">tooltips and info goes here</p>
+                </div>
             </div>
         </div>
     </div>

@@ -28,12 +28,42 @@ let soulsDsp = document.getElementById("soulsDisplay");
 let devilsDsp = document.getElementById("devilsDisplay");
 let succubiDsp = document.getElementById("succubiDisplay");
 
+//MENU REFERENCES (fill these through usage of script)
+let StoreList = document.getElementById("storeItemList");
+
 
 //INVENTORY VALUES
 let agony = 0;
 let souls = 1;
 let devils = 0;
 let succubi = 0;
+
+let minions = [
+    {
+        "type": "imp",
+        "amount": 0,
+        "basePrice": 10,
+        "price": 0
+    },
+    {
+        "type": "devil",
+        "amount": 0,
+        "basePrice": 20,
+        "price": 0
+    },
+    {
+        "type": "Jezebel",
+        "amount": 0,
+        "basePrice": 30,
+        "price": 0
+    },
+    {
+        "type": "Beguiler",
+        "amount": 0,
+        "basePrice": 40,
+        "price": 0
+    },
+]
 
 //MULTIPLIERS
 let agonyMultiplier = 1;
@@ -122,8 +152,16 @@ buySuccubusBtn.addEventListener("click", () =>
 
 
 //---CHEATY, CHEATY BUTTONS
-cheatAgony1KBtn.addEventListener("click", ()=>{agony += 1000; UpdateDisplay()});
-cheatAgony1MilBtn.addEventListener("click", () =>{agony +=1000000; UpdateDisplay()});
+cheatAgony1KBtn.addEventListener("click", () =>
+{
+    agony += 1000;
+    UpdateDisplay()
+});
+cheatAgony1MilBtn.addEventListener("click", () =>
+{
+    agony += 1000000;
+    UpdateDisplay()
+});
 
 //=============================
 //FUNCTIONS TO MAKE LIFE EASIER
@@ -173,16 +211,17 @@ function StoreButton(tag, price, buttonID) {
 //when the number is over 1 billion, it will be represented as 1.000 bil
 //etc.
 //maybe also see about putting in periods to separate big numbers below 1000000
-function SimpleNumber(number)
-{
+function SimpleNumber(number) {
     let i = 0.0;
-    if(number >= 1000000){
-        i = Math.floor(number/1000)/1000 + " mil";
+    if (number >= 1000000) {
+        i = Math.floor(number / 1000) / 1000 + " mil";
     }
-    else if(number >= 1000000000){
-        i = Math.floor(number/1000000)/1000 + " bil";
+    else if (number >= 1000000000) {
+        i = Math.floor(number / 1000000) / 1000 + " bil";
     }
-    else{ i = number.toString();}
+    else {
+        i = number.toString();
+    }
 
     return i;
 }
