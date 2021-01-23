@@ -38,9 +38,11 @@
                         <h3>STATS</h3>
                     </header>
                     <ul id="itemStatList">
-<!--                        <li>-->
-<!--                            <span class="w-100 margin-b text-light">test item</span>-->
-<!--                        </li>-->
+                        <template id="StatTemplate">
+                            <li class="w-100 margin-b text-light">
+                                <span>TEMPLATE</span>
+                            </li>
+                        </template>
 <!--                        FILL WITH JS-->
                     </ul>
                     <div id="cheatmenu">
@@ -59,18 +61,22 @@
             </div>
         </div>
 
-        <div id="store" class="DEBUGFRAME padding-3 col-7 col-md-4 h-60 h-md-100">
+        <div id="shop" class="DEBUGFRAME padding-3 col-7 col-md-4 h-60 h-md-100">
             <div class="bg-dark-2 rounded-2 shadow w-100 h-100 overflow-hidden">
                 <div class="DEBUGFRAME w-100 h-60 h-sm-80 overflow-x-hidden overflow-y-scroll">
                     <header class="bg-light margin-b text-dark padding-3">
                         <H3>STORE</H3>
                     </header>
-                    <ul id="storeItemList">
+                    <ul id="shopItemList">
+<!--                        TEMPLATE BUTTON FOR JS TO COPY-->
+                        <template  id="shopTemplate">
+                            <li><button id="tempId" class="btn-store padding-3 w-100 rounded-top margin-b" disabled hidden>TEMPLATE</button></li>
+                        </template>
 <!--                        FILL WITH JS-->
                     </ul>
                 </div>
-                <div id="toolTips" class="DEBUGFRAME d-flex-center text-light bg-dark padding-3 w-100 h-40 h-sm-20">
-                    <p class="DEBUGFRAME margin-auto">tooltips and info goes here</p>
+                <div id="tooltips" class="DEBUGFRAME d-flex-center text-light bg-dark padding-3 w-100 h-40 h-sm-20">
+                    <p id="tooltipText" class="DEBUGFRAME margin-auto ">tooltips and info goes here</p>
                 </div>
             </div>
         </div>
