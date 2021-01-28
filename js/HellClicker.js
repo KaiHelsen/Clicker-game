@@ -18,13 +18,14 @@
          -simplify & optimize updates.
          -more?
          -PROVIDE SUPPORT FOR MULTIPLE CURRENCIES
-
-
  */
 
+//import modules
 import {Inventory, GameObject, Corruptor, Tormentor} from "./Inventory.js";
+import {progressBar} from "../Prototypes/UI-Elements/UIElements.js";
 import {ItemArray} from "./InventoryItems.js";
 
+//start Hellclicker!
 let HellClicker = function ()
 {
 
@@ -48,6 +49,7 @@ let HellClicker = function ()
 //DISPLAY ELEMENT REFERENCES:
     let agonyDsp = document.getElementById("agonyDisplay");
     let ToolTipDsp = document.getElementById("tooltipText");
+    let progressDsp;
 
 //MENU REFERENCES
     let ShopList = document.getElementById("shopItemList");
@@ -56,6 +58,15 @@ let HellClicker = function ()
 //INVENTORY VALUES
     let agony = 0;
     let myInventory = new Inventory();
+    let progress = 30;
+    let maxProgress = 100;
+
+    let currencies = [
+        {currency: "agony", index: 0},
+        {currency: "souls", index: 1},
+    ];
+
+    Object.freeze(currencies);
 
 //MULTIPLIERS
     //nothing here yet
@@ -114,6 +125,11 @@ let HellClicker = function ()
 
         clickerBtn = document.getElementById("clickerBtn");
 
+        //initialize progress bar
+        progressDsp = new progressBar(document.getElementById("progress"), 5, 1000);
+        progressDsp.Update();
+        progressDsp.SetInnerText("MIGHT");
+
         //GET HTML TEMPLATES FROM HTML
         //DANGER: EXPERIMENTAL!!!
         if ("content" in document.createElement("template")) {
@@ -167,11 +183,14 @@ let HellClicker = function ()
             if (minion instanceof Tormentor) {
                 TormentorAgony += minion.amount * minion.tier;
             }
+
+            progressDsp.childNodes[1].style.width = (progress/maxProgress)*100 + "%";
         });
         agony += TormentorAgony;
 
+
         UpdateShop();
-        //UpdateStats();
+        UpdateStats();
 
     }
 
@@ -201,7 +220,7 @@ let HellClicker = function ()
         myInventory.items.forEach(function (item)
         {
             item.shopButton.disabled = (agony < item.price);
-            item.shopButton.innerHTML = item.name.toUpperCase() + ": " + SimplifyNumber(item.price) + "_" + item.currency;
+            item.shopButton.innerHTML = item.name.toUpperCase() + ": " + SimplifyNumber(item.price) + "_" + currencies[item.currency].currency;
             //maybe don't run this test every time? find alternative that only runs once then never again.
             if (agony >= item.price) {
                 item.shopButton.hidden = false;
